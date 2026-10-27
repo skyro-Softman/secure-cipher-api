@@ -7,12 +7,11 @@ def xor_bytes(data: bytes, key: bytes) -> bytes:
     """Performs XOR directly on raw bytes."""
     return bytes(b ^ key[i % len(key)] for i, b in enumerate(data))
 
-# A clean, simple web page with input forms and buttons
 UI_HTML = """
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Secure Cipher Tool</title>
+    <title>secure message tool by skyro Softman</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; max-width: 600px; margin: auto; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
@@ -31,8 +30,8 @@ UI_HTML = """
             <label>Message / Text:</label>
             <textarea name="message" rows="3" required>{{ enc_msg }}</textarea>
             
-            <label>Passcode:</label>
-            <input type="text" name="passcode" value="{{ enc_pass }}" required>
+            <label>key:</label>
+            <input type="password" name="password" value="{{ enc_pass }}" required>
             
             <button type="submit">Encrypt</button>
         </form>
@@ -48,8 +47,8 @@ UI_HTML = """
             <label>Ciphertext:</label>
             <textarea name="ciphertext" rows="3" required>{{ dec_cipher }}</textarea>
             
-            <label>Passcode:</label>
-            <input type="text" name="passcode" value="{{ dec_pass }}" required>
+            <label>key:</label>
+            <input type="password" name="password" value="{{ dec_pass }}" required>
             
             <button type="submit">Decrypt</button>
         </form>
@@ -69,7 +68,7 @@ def home():
 @app.route('/encrypt-web', methods=['POST'])
 def web_encrypt():
     message = request.form.get('message', '')
-    passcode = request.form.get('passcode', '')
+    key = request.form.get('password', '')
     try:
         encrypted_bytes = xor_bytes(message.encode('utf-8'), passcode.encode('utf-8'))
         ciphertext = base64.b64encode(encrypted_bytes).decode('utf-8')
@@ -80,7 +79,7 @@ def web_encrypt():
 @app.route('/decrypt-web', methods=['POST'])
 def web_decrypt():
     ciphertext = request.form.get('ciphertext', '')
-    passcode = request.form.get('passcode', '')
+    key = request.form.get('password', '')
     try:
         encrypted_bytes = base64.b64decode(ciphertext.encode('utf-8'))
         decrypted_bytes = xor_bytes(encrypted_bytes, passcode.encode('utf-8'))
