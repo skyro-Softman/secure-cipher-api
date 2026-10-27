@@ -22,7 +22,7 @@ UI_HTML = """
     </style>
 </head>
 <body>
-    <h2>Secure Message Cipher Tool</h2>
+    <h2>Secure Message Cipher Tool by Skyro Softman</h2>
 
     <div class="card">
         <h3>Encrypt Message</h3>
